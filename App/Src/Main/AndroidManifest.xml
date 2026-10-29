@@ -1,0 +1,25 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<uses-permission android:name="android.permission.READ_CONTACTS"/>
+<application android:allowBackup="false"android:label="So
+android:theme="@android:style/Theme.Material.Light.NoActionBar"
+android:supportsRtl="true">
+tên
+danh
+ba"
+<activity android:name=".MainActivity" android:exported="true">
+<intent-filter><action
+android:name="android.intent.action.MAlN"/><category
+android:name="android.intent.category.LAUNCHER"/></intent-filter>
+</activity>
+<service
+android:name=".NumberAccessibilityService'
+android:permission="android.permission. BIND_ACCESSIBILITY_SERVICE"
+android:exported="true" android:label="Nhan diên sô diên thoai">
+<intent-filter><action
+android:name="android.accessibilityservice.AccessibilityService"/></intent-filter>
+<meta-data
+android:resource="@xml/accessibility_service_config"/>
+</service>
+android:name="android.accessibilityservice"
+</application>
+</manifest>
