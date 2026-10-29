@@ -1,9 +1,10 @@
+
 name: Build Android APK
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
 
 permissions:
   contents: read
@@ -11,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,14 +30,16 @@ jobs:
           echo "/tmp/gradle-8.9/bin" >> "$GITHUB_PATH"
 
       - name: Build APK
+        working-directory: SoTenDanhBa
         run: gradle --no-daemon clean assembleDebug
 
       - name: Verify APK exists
-        run: test -s app/build/outputs/apk/debug/app-debug.apk
+        run: test -s SoTenDanhBa/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SoTenDanhBa-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: SoTenDanhBa/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+
