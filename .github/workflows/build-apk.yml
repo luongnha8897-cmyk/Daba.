@@ -29,8 +29,7 @@ jobs:
           unzip -q /tmp/gradle.zip -d /tmp
           echo "/tmp/gradle-8.9/bin" >> "$GITHUB_PATH"
 
-      - name: Build APK
-        working-directory: SoTenDanhBa
+            - name: Build APK
         run: gradle --no-daemon clean assembleDebug
 
       - name: Verify APK exists
