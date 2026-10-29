@@ -4,9 +4,7 @@ name: Build Android APK
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
 
 permissions:
   contents: read
@@ -27,21 +25,24 @@ jobs:
 
       - name: Install Gradle
         run: |
-          curl --fail --location https://services.gradle.org/distributions/gradle-8.9-bin.zip -o /tmp/gradle.zip
+          curl --fail --location --retry 3 https://services.gradle.org/distributions/gradle-8.9-bin.zip -o /tmp/gradle.zip
           unzip -q /tmp/gradle.zip -d /tmp
           echo "/tmp/gradle-8.9/bin" >> "$GITHUB_PATH"
 
-      - name: Show project files
+      - name: Locate Android project
         run: |
-          pwd
-          find . -maxdepth 3 \( -name settings.gradle -o -name settings.gradle.kts -o -name build.gradle -o -name build.gradle.kts \)
+          find . -name settings.gradle -o -name settings.gradle.kts
 
       - name: Build APK
-        run: gradle --no-daemon clean assembleDebug
+        run: |
+          PROJECT_DIR="$(dirname "$(find . -name settings.gradle -type f | head -n 1)")"
+          test -n "$PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          gradle --no-daemon :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SoTenDanhBa-debug-apk
-          path: '**/build/outputs/apk/debug/*.apk'
+          path: '**/app/build/outputs/apk/debug/app-debug.apk'
           if-no-files-found: error
